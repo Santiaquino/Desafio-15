@@ -2,13 +2,18 @@ const form = document.getElementById("changeForm");
 
 form.addEventListener("submit", (event) => {
   event.preventDefault();
-  const data = new FormData(form);
-  const obj = {};
 
-  data.forEach((value, key) => (obj[key] = value));
-  fetch("/api/sessions/changePassword", {
+  let token = document.getElementById("token").textContent;
+  let password = document.getElementById("password").value;
+
+  const data = {
+    token,
+    password,
+  };
+
+  fetch("/api/sessions/changePassword/", {
     method: "POST",
-    body: JSON.stringify(obj),
+    body: JSON.stringify(data),
     headers: {
       "Content-Type": "application/json",
     },

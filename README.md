@@ -1,9 +1,8 @@
-## Desafio 14 - Implementacion de logger
+## Desafio 15 - Practica de intregracion sobre el ecommerce
 
-- Agregue la carpeta logs donde tengo la configuracion del logger (logger.js) y un archivo donde se guardan los logs (errors.js)
-- modifique los controllers y las rutas para que funcionen con el logger
-- cambie los console.log() que tenia por loggers
-- agregue una nueva ruta get llamada /loggerTest sobre el localhost para que muestre todos los logs
+- Agregue la carpeta middlewares donde estan los archivos para el manejo del cambio de contraseña.
+- se agrego un nuevo campo para el modelo de usuario llamado "premium".
+- se agrego una nueva ruta llamada "/api/users/premium/:uid" para cambiar el rol de un usuario, puede cambiar de "user" a "premium" y viceversa.
 
 ### cosas a tener en cuenta:
 

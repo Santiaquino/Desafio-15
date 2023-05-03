@@ -115,8 +115,24 @@ const updates = async (req, res, next) => {
   }
 };
 
+const changeRole = async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const user = await userService.getOne(uid, null);
+
+    if (user.role === "usuario")
+      await userService.updateUserById(uid, { role: "premium" });
+    else await userService.updateUserById(uid, { role: "usuario" });
+
+    res.json({ status: "Success", message: "Rol cambiado exitosamente" });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export default {
   getAll,
   createUser,
   updates,
+  changeRole,
 };

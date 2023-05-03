@@ -17,4 +17,5 @@ export default {
   admin: process.env.ADMIN,
   adminPass: process.env.ADMIN_PASS,
   persistence: process.env.PERSISTENCE,
+  tokenRestore: process.env.TOKENRESTORE,
 };

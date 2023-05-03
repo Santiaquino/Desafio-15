@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import UsersManager from "../dao/dbManagers/users.js";
-import { isValidPassword } from "../utils.js";
+import { isValidPassword, createHash } from "../utils.js";
 import config from "../config/config.js";
 import UsersDTO from "../dao/DTOs/users.dto.js";
 import { transport } from "../utils.js";
+import { ExtractJwt } from "passport-jwt";
 
 const insUsers = new UsersManager();
 
@@ -83,26 +84,35 @@ const github = async (req, res) => {
 
 // restore
 
-const restore = async (req, res) => {
-  const { email } = req.body;
+const restore = async (req, res, next) => {
+  try {
+    const email = req.user.email;
 
-  await transport.sendMail({
-    from: "santiaaquino4@gmail.com",
-    to: `${email}`,
-    subject: "Recuperacion de contraseña",
-    html: `<a href="http://localhost:3000/changePassword">Click aqui</a>`,
-  });
+    const user = { email: email };
 
-  res.json({ status: "Success", message: "Envio de email exitoso" });
+    let token = jwt.sign(user, config.tokenRestore, { expiresIn: "1h" });
+
+    await transport.sendMail({
+      from: "santiaaquino4@gmail.com",
+      to: `${email}`,
+      subject: "Recuperacion de contraseña",
+      html: `<a href="http://localhost:3000/changePassword/${token}">Click aqui para reestablecer su contraseña</a>`,
+    });
+
+    res.json({ status: "Success", message: "Envio de email exitoso" });
+  } catch (err) {
+    next(err);
+  }
 };
 
 //change password
 
-const changePassword = async (req, res) => {
-  const { password } = req.body;
-
-  if (password)
-    res.json({ status: "Success", message: "Cambio de contraseña exitoso" });
+const changePassword = async (req, res, next) => {
+  try {
+    res.json({ status: "Success!", message: "cambio correctamente" });
+  } catch (err) {
+    next(err);
+  }
 };
 
 //current

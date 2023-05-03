@@ -40,7 +40,7 @@ router.get("/restore", (req, res) => {
   controller.getRestore(req, res);
 });
 
-router.get("/changePassword", (req, res) => {
+router.get("/changePassword/:token", (req, res) => {
   controller.getChangePassword(req, res);
 });
 

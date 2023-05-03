@@ -1,6 +1,8 @@
 import { productsModel } from "../dao/models/products.model.js";
 import CartsManager from "../dao/dbManagers/carts.js";
 import UsersManager from "../dao/dbManagers/users.js";
+import config from "../config/config.js";
+import jwt from "jsonwebtoken";
 
 const insCarts = new CartsManager();
 const insUsers = new UsersManager();
@@ -133,7 +135,9 @@ const getRestore = async (req, res) => {
 };
 
 const getChangePassword = async (req, res) => {
-  res.render("changePassword");
+  const token = req.token;
+
+  res.render("changePassword", { token });
 };
 
 export default {

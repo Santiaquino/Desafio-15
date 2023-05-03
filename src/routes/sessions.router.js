@@ -2,6 +2,8 @@ import { Router } from "express";
 import passport from "passport";
 import { strategyPassport } from "../utils.js";
 import controller from "../controller/sessions.controller.js";
+import { restoreUser } from "../middlewares/restore.js";
+import { changePassword } from "../middlewares/changePassword.js";
 
 const router = Router();
 
@@ -61,12 +63,12 @@ router.get(
 
 // restore
 
-router.post("/restore", async (req, res) => {
-  controller.restore(req, res);
+router.post("/restore", restoreUser, async (req, res, next) => {
+  controller.restore(req, res, next);
 });
 
-router.post("/changePassword", async (req, res) => {
-  controller.changePassword(req, res);
+router.post("/changePassword", changePassword, async (req, res, next) => {
+  controller.changePassword(req, res, next);
 });
 
 //current
