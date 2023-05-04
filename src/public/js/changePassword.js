@@ -3,7 +3,7 @@ const form = document.getElementById("changeForm");
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  let token = document.getElementById("token").textContent;
+  let token = document.getElementById("token").innerText;
   let password = document.getElementById("password").value;
 
   const data = {

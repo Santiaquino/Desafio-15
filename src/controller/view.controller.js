@@ -135,9 +135,18 @@ const getRestore = async (req, res) => {
 };
 
 const getChangePassword = async (req, res) => {
-  const token = req.token;
+  const token = req.params.token;
+  let expired;
 
-  res.render("changePassword", { token });
+  jwt.verify(token, config.tokenRestore, function (err, user) {
+    if (err) {
+      expired = true;
+    } else {
+      expired = false;
+    }
+  });
+
+  res.render("changePassword", { token, expired });
 };
 
 export default {

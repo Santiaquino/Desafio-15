@@ -9,7 +9,6 @@ export const restoreUser = async (req, res, next) => {
 
   try {
     const user = await insUser.getOne(null, email);
-    console.log(user);
     if (!user) {
       req.logger.info("El usuario no existe");
       return res.json({ status: "error", message: "El usuario no existe" });

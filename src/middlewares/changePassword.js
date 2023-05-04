@@ -6,48 +6,40 @@ import { isValidPassword } from "../utils.js";
 const insUser = new UsersManager();
 
 export const changePassword = async (req, res, next) => {
-  req.logger.debug("EMPIEZA EL RECOVERPASSWORD");
-
-  let token = req.body.token;
+  let token = req.body.token.trim();
   let password = req.body.password;
 
-  if (password.trim() == 0)
-    return res.send({
+  if (!password)
+    return res.json({
       status: "error",
       error: "La contraseña no puede estar vacia",
     });
 
   let result;
 
-  console.log("Verificacion");
-  jwt.verify(token, config.tokenRestore, function (error, decoded) {
+  jwt.verify(token, config.tokenRestore, function (error, user) {
     req.logger.debug("El token es");
-    console.log(token);
-    console.log(error);
     if (error) {
-      if (error instanceof jwt.TokenExpiredError) {
-        result = "EXPIRED";
-        req.logger.debug("Expiro");
+      if (error) {
+        return res.json({
+          status: "Error",
+          error: "Su token no es valido o expiro",
+        });
       }
     } else {
-      req.logger.debug("No expiro");
-      console.log(decoded);
-      result = decoded;
+      result = user;
     }
   });
-
-  if (result == "EXPIRED")
-    return res.send({ status: "error", message: "El token expiro" });
 
   let email = result.email;
 
   let account = await insUser.getOne(null, email);
 
   if (!account)
-    return res.send({ status: "error", message: "La cuenta ya no existe" });
+    return res.json({ status: "error", error: "La cuenta ya no existe" });
 
   if (isValidPassword(account, password))
-    return res.send({ status: "error", message: "La contraseña es la misma" });
+    return res.json({ status: "error", json: "La contraseña es la misma" });
 
   req.account = account;
   req.password = password;
